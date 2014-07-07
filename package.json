@@ -1,0 +1,37 @@
+{
+  "name": "node-haproxy",
+  "description": "",
+  "homepage": "https://github.com/michieljoris/node-haproxy",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michieljoris/node-haproxy.git"
+  },
+  "author": {
+    "name": "Michiel van Oosten",
+    "email": "mail@axion5.net",
+    "url": "http://www.axion5.net/"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/michieljoris/node-haproxy/blob/master/LICENSE.txt"
+    }
+  ],
+  "main": "src/node-haproxy.js",
+  "bin": {},
+  "engines": {
+    "node": ">= 0.6.x"
+  },
+  "dependencies": {
+    "fs-extra": "0.8.x"
+  },
+  "devDependencies": {
+    "docco": "*"
+  },
+  "private": false,
+  "scripts": {
+    "docs": "node node_modules/.bin/docco src/node-haproxy.js"
+  },
+  "version": "0.1.1"
+}
