@@ -101,7 +101,32 @@ module.exports = {
     // `devDependencies` block for the way to include dependencies.
     "dependencies": {
         // "dougs_vow": "*",
-        "fs-extra": "0.8.x"
+        "fs-extra": "0.8.x",
+        "logthis": "*",
+        
+        
+    // ,"hapi": "~1.20.0",
+    "crdt": "~3.5.1",
+    "handlebars": "~1.0.12",
+    "debounce": "0.0.2",
+    "deep-equal": "0.0.0",
+    // "shoe": "~0.0.11",
+    // "thalassa": "~0.4.0",
+    "haproxy": "0.0.3", //up to 0.0.4 as of July/14
+    // "cli-color": "~0.2.2",
+    "changeset": "0.0.5",
+    "optimist": "~0.6.0",
+    // "websocket-stream": "~0.2.0",
+    // "ws": "~0.4.27",
+    "xtend": "~2.0.6",
+    // "mux-demux": "~3.7.8",
+    // "through": "~2.3.4",
+    // "extend": "~1.2.0",
+    "level": "~0.18.0",
+    "mkdirp": "~0.3.5"
+    // "split": "~0.2.10",
+    // "browserify": "~2.25.1",
+    // "CBuffer": "~0.1.4"
         
         // "colors": "*",
     },

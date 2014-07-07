@@ -24,7 +24,18 @@
     "node": ">= 0.6.x"
   },
   "dependencies": {
-    "fs-extra": "0.8.x"
+    "fs-extra": "0.8.x",
+    "logthis": "*",
+    "crdt": "~3.5.1",
+    "handlebars": "~1.0.12",
+    "debounce": "0.0.2",
+    "deep-equal": "0.0.0",
+    "haproxy": "0.0.3",
+    "changeset": "0.0.5",
+    "optimist": "~0.6.0",
+    "xtend": "~2.0.6",
+    "level": "~0.18.0",
+    "mkdirp": "~0.3.5"
   },
   "devDependencies": {
     "docco": "*"
@@ -33,5 +44,5 @@
   "scripts": {
     "docs": "node node_modules/.bin/docco src/node-haproxy.js"
   },
-  "version": "0.1.1"
+  "version": "0.1.9"
 }
