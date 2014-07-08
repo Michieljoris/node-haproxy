@@ -34,6 +34,7 @@
     "changeset": "0.0.5",
     "optimist": "~0.6.0",
     "xtend": "~2.0.6",
+    "extend": "~1.2.0",
     "level": "~0.18.0",
     "mkdirp": "~0.3.5"
   },
@@ -44,5 +45,5 @@
   "scripts": {
     "docs": "node node_modules/.bin/docco src/node-haproxy.js"
   },
-  "version": "0.1.9"
+  "version": "0.1.10"
 }

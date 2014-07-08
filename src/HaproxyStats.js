@@ -26,7 +26,7 @@ var HaproxyStats = module.exports = function HaproxyStats (opts) {
   this.data = opts.data;
   this.haproxy = opts.haproxy;
   this.config.haproxySocketPath = norm(opts.haproxySocketPath || '/tmp/haproxy.sock');
-  this.config.statsIntervalRate = opts.statsIntervalRate || 2000;
+  this.config.statsIntervalRate = opts.statsIntervalRate || 6000;
   this.log = (typeof opts.log === 'function') ? opts.log : function (){};
 
   this.createStatsInterval(this.config.statsIntervalRate);

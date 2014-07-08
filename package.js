@@ -121,7 +121,7 @@ module.exports = {
     "xtend": "~2.0.6",
     // "mux-demux": "~3.7.8",
     // "through": "~2.3.4",
-    // "extend": "~1.2.0",
+    "extend": "~1.2.0",
     "level": "~0.18.0",
     "mkdirp": "~0.3.5"
     // "split": "~0.2.10",

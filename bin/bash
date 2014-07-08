@@ -1,0 +1,1 @@
+ docker run --rm -i -t -p 10000:10000 -v `pwd`:/src michieljoris/haproxy /sbin/my_init -- bash
