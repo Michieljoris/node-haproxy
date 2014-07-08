@@ -22,7 +22,7 @@ RUN echo "/root" > /etc/container_environment/HOME
 # my build instructions:
 
 RUN apt-get update
-RUN apt-get install rlwrap
+RUN apt-get install rlwrap wget
 
 # haproxy 
 # RUN   \

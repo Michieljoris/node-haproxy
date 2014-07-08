@@ -229,5 +229,36 @@ module.exports = function(opts) {
 
 var haproxy = module.exports();
 //test
-var r = haproxy.getHaproxyConfig();
-log('HAPROXY CONFIG:', r);
+haproxy.putBackend('backend1', {
+    // "type" : "dynamic|static" 
+    "type" : "static" 
+    , "name" : "foo" // only required if type = dynamic
+    , "version" : "1.0.0" // only required if type = dynamic
+    // , "balance" : "roundrobin|source" // defaults to roundrobin
+    , "host" : "myapp.com"  // default: undefined, if specified request to member will contain this host header
+    , "health" : {                 // optional health check
+        "method": "GET"            // HTTP method
+        , "uri": "/checkity-check"   // URI to call
+        , "httpVersion": "HTTP/1.1"  // HTTP/1.0 or HTTP/1.1 `host` required if HTTP/1.1
+        , "interval": 5000           // period to check, milliseconds
+    }
+    // , "mode" : "http|tcp" // default: http
+    , "natives": []  // array of strings of raw config USE SPARINGLY!!
+    , "members" : [] // if type = dynamic this is dynamically populated based on role/version subscription
+    // otherwise expects { host: '10.10.10.10', port: 8080}
+});
+
+haproxy.putFrontend('frontend1', {
+    "bind": "0.0.0.0:10000" // IP and ports to bind to, comma separated, host may be *
+  , "backend": "backend1"      // the default backend to route to, it must be defined already
+  , "mode": "http"         // default: http, expects tcp|http
+  , "keepalive": "close"  // default: "default", expects default|close|server-close
+  , "rules": []           // array of rules, see next section
+  , "natives": []         // array of strings of raw config USE SPARINGLY!!
+});
+
+
+
+var r = haproxy.getBackends();
+
+log('BACKENDS-=-------------------:', r);
