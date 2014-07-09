@@ -13,7 +13,7 @@ var handlebars = require('handlebars')
   ;
 
 
-log('hello');
+// log('hello');
 
 var HAProxyManager = module.exports = function HAProxyManager (opts) {
   if (typeof opts !== 'object') opts = {};
@@ -57,6 +57,7 @@ HAProxyManager.prototype.writeConfig = function() {
   var previousConfig = this.latestConfig;
   this.latestConfig = this.template(data);
 
+    log('writing config!!!!!!!!!!!!!!!!!!!', this.latestConfig);
   // only write the config and reload if it actually changed
   if (!deepEqual(previousConfig, this.latestConfig)) {
     fs.writeFileSync(this.config.haproxyCfgPath, this.latestConfig , 'utf-8');
@@ -80,7 +81,7 @@ HAProxyManager.prototype.reload = function () {
 };
 
 HAProxyManager.prototype._changeFrontEnd = function(row, changed) {
-  this.log('debug', 'HaproxyManager._changeFrontEnd', changed);
+  this.log('HaproxyManager._changeFrontEnd', changed);
   this.writeConfigDebounced();
 };
 
@@ -118,12 +119,12 @@ handlebars.registerHelper('frontendHelper', function (frontend) {
   var hasNatives = frontend.natives && frontend.natives.length > 0;
 
   output.push("bind " + frontend.bind);
-  output.push("mode " + frontend.mode);
-  output.push("default_backend " + frontend.backend);
+  output.push("    mode " + frontend.mode);
+  output.push("    default_backend " + frontend.backend);
 
   // http only default options
   if (frontend.mode === 'http') {
-    output.push("option httplog");
+    output.push("    option httplog");
 
     // The default keep-alive behavior is to use keep-alive if clients and
     // backends support it. However, if haproxy will only process rules when
@@ -134,16 +135,16 @@ handlebars.registerHelper('frontendHelper', function (frontend) {
     // If there are any rules, the default behavior is to use http-server-close
     // and http-pretend-keepalive
     if (frontend.keepalive === 'server-close') {
-      output.push("option http-server-close");
-      output.push("option http-pretend-keepalive");
+      output.push("    option http-server-close");
+      output.push("    option http-pretend-keepalive");
     }
     else if (frontend.keepalive === 'close'){
-      output.push("option forceclose");
+      output.push("    option forceclose");
     }
     // the default if there are rules is to use server close
     else if (hasRules) {
-      output.push("option http-server-close");
-      output.push("option http-pretend-keepalive");
+      output.push("    option http-server-close");
+      output.push("    option http-pretend-keepalive");
     }
   }
 
@@ -183,11 +184,11 @@ handlebars.registerHelper('backendHelper', function (backend) {
 
   // output mode and balance options
   output.push("mode " + backend.mode);
-  output.push("balance " + backend.balance);
+  output.push("    balance " + backend.balance);
 
   // host header propagation
   if (backend.host) {
-    output.push("reqirep ^Host:\\ .*  Host:\\ " + backend.host);
+    output.push("    reqirep ^Host:\\ .*  Host:\\ " + backend.host);
   }
 
   // option httpchk
@@ -195,7 +196,7 @@ handlebars.registerHelper('backendHelper', function (backend) {
     var httpVersion = (health.httpVersion === 'HTTP/1.1') ?
                       ('HTTP/1.1\\r\\nHost:\\ ' + backend.host) :
                       health.httpVersion;
-    output.push(util.format("option httpchk %s %s %s", health.method, health.uri, httpVersion));
+    output.push(util.format("    option httpchk %s %s %s", health.method, health.uri, httpVersion));
   }
 
   if (hasNatives) {
@@ -209,7 +210,7 @@ handlebars.registerHelper('backendHelper', function (backend) {
     members.forEach(function (member) {
       var name = util.format("%s_%s:%s", backend.key, member.host, member.port);
       var interval = (health) ? health.interval : 2000;
-      output.push(util.format("server %s %s:%s check inter %s", name, member.host, member.port, interval));
+      output.push(util.format("    server %s %s:%s check inter %s", name, member.host, member.port, interval));
     });
   }
 

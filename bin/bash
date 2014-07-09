@@ -1,1 +1,1 @@
- docker run --rm -i -t -p 10000:10000 -v `pwd`:/src michieljoris/haproxy /sbin/my_init -- bash
+ docker run --rm -i -t -p 7946:7946 -p 1989:1989 -p 10000:10000 -v `pwd`:/src michieljoris/haproxy /sbin/my_init -- bash;

@@ -70,7 +70,7 @@ module.exports = function(opts) {
     
     // Stream stats into a leveldb
     var db = new Db(opts, function () {
-        db.writeActivity({ type: 'activity',  time: Date.now(), verb: 'started', object: '1234' });
+        db.writeActivity({ type: 'activity',  time: Date.now(), verb: 'started'});
     });
 
     // Wire up stats to write to stats db
@@ -90,14 +90,14 @@ module.exports = function(opts) {
 
     // Wire up haproxy changes to write to activity db
     haproxyManager.on('configChanged', function (statObj) {
-        var activityObj = { type: 'activity',  time: Date.now(), verb: 'haproxyConfigChanged', object: '1234' };
-        log('activity', activityObj);
+        var activityObj = { type: 'activity',  time: Date.now(), verb: 'haproxyConfigChanged'};
+        log('configChanged\n', activityObj);
         db.writeActivity(activityObj);
     });
 
     haproxyManager.on('reloaded', function (statObj) {
-        var activityObj = { type: 'activity',  time: Date.now(), verb: 'haproxyRestarted', object: '1234' };
-        log('activity', activityObj);
+        var activityObj = { type: 'activity',  time: Date.now(), verb: 'haproxyRestarted' };
+        log('reloaded\n', activityObj);
         db.writeActivity(activityObj); 
     });
     
@@ -232,24 +232,52 @@ var haproxy = module.exports();
 haproxy.putBackend('backend1', {
     // "type" : "dynamic|static" 
     "type" : "static" 
-    , "name" : "foo" // only required if type = dynamic
-    , "version" : "1.0.0" // only required if type = dynamic
+    // , "name" : "foo" // only required if type = dynamic
+    // , "version" : "1.0.0" // only required if type = dynamic
     // , "balance" : "roundrobin|source" // defaults to roundrobin
-    , "host" : "myapp.com"  // default: undefined, if specified request to member will contain this host header
-    , "health" : {                 // optional health check
-        "method": "GET"            // HTTP method
-        , "uri": "/checkity-check"   // URI to call
-        , "httpVersion": "HTTP/1.1"  // HTTP/1.0 or HTTP/1.1 `host` required if HTTP/1.1
-        , "interval": 5000           // period to check, milliseconds
-    }
+    // , "host" : "myapp.com"  // default: undefined, if specified request to member will contain this host header
+    // , "health" : {                 // optional health check
+    //     "method": "GET"            // HTTP method
+    //     , "uri": "/checkity-check"   // URI to call
+    //     , "httpVersion": "HTTP/1.0"  // HTTP/1.0 or HTTP/1.1 `host` required if HTTP/1.1
+    //     , "interval": 5000           // period to check, milliseconds
+    // }
     // , "mode" : "http|tcp" // default: http
     , "natives": []  // array of strings of raw config USE SPARINGLY!!
-    , "members" : [] // if type = dynamic this is dynamically populated based on role/version subscription
+    , "members" : [
+        {
+        // "name": "myapp",
+        // "version": "1.0.0",
+        "host": "192.168.1.184",
+        "port": 8001
+        // "lastKnown": 1378762056885,
+        // "meta": {
+        //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-01",
+        //     "pid": 17941,
+        //     "registered": 1378740834616
+        // },
+        // "id": "/myapp/1.0.0/10.10.240.121/8080"
+    },
+    {
+        // "name": "myapp",
+        // "version": "1.0.0",
+        "host": "192.168.1.184",
+        "port": 8002
+        // "lastKnown": 1378762060226,
+        // "meta": {
+        //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-02",
+        //     "pid": 18020,
+        //     "registered": 1378762079883
+        // },
+        // "id": "/myapp/1.0.0/10.10.240.80/8080"
+    }
+        
+    ] // if type = dynamic this is dynamically populated based on role/version subscription
     // otherwise expects { host: '10.10.10.10', port: 8080}
 });
 
-haproxy.putFrontend('frontend1', {
-    "bind": "0.0.0.0:10000" // IP and ports to bind to, comma separated, host may be *
+haproxy.putFrontend('www', {
+    "bind": "*:10000" // IP and ports to bind to, comma separated, host may be *
   , "backend": "backend1"      // the default backend to route to, it must be defined already
   , "mode": "http"         // default: http, expects tcp|http
   , "keepalive": "close"  // default: "default", expects default|close|server-close
@@ -261,4 +289,6 @@ haproxy.putFrontend('frontend1', {
 
 var r = haproxy.getBackends();
 
-log('BACKENDS-=-------------------:', r);
+log('BACKENDS-=-------------------:\n', r);
+
+log('CONFIG------------------------:\n', haproxy.getHaproxyConfig());

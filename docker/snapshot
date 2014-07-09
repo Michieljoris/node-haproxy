@@ -1,0 +1,46 @@
+alive: haproxy 172.17.0.125:7946
+alive: agent-two 172.17.42.1:7946
+clock: 1
+clock: 2
+not-alive: agent-two
+alive: agent-two 172.17.42.1:7946
+clock: 3
+leave
+clock: 4
+alive: haproxy 172.17.0.125:7946
+clock: 5
+alive: agent-two 172.17.42.1:7946
+clock: 6
+not-alive: agent-two
+alive: agent-two 172.17.42.1:7946
+clock: 7
+query-clock: 7
+query-clock: 8
+query-clock: 9
+query-clock: 10
+query-clock: 11
+query-clock: 14
+query-clock: 15
+query-clock: 16
+query-clock: 17
+query-clock: 18
+query-clock: 19
+query-clock: 20
+query-clock: 21
+query-clock: 22
+query-clock: 23
+query-clock: 24
+query-clock: 25
+query-clock: 26
+query-clock: 27
+query-clock: 28
+query-clock: 29
+query-clock: 30
+event-clock: 1
+event-clock: 2
+query-clock: 31
+query-clock: 32
+event-clock: 3
+clock: 8
+not-alive: agent-two
+leave

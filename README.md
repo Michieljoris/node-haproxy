@@ -1,11 +1,22 @@
 node-haproxy
 --------
 
+TODO:
+
+* README needs editing
+* Remove remaining thalassa cruft from api
+
 Functionality and code lifted and adapted from
 [thalassa=aqueduct](https://github.com/PearsonEducation/thalassa-aqueduct)
 
 A node module to leverage HAProxy's ability to gracefully reload config without
 any interruption to user, in other words, without dropping any connections.
+
+Best run in a docker container, or run the process with root privileges.
+
+The module can be used in a webserver that implements a rest api, as in the
+thalassa-aqueduct implementation, or haproxy config info can come from another
+source, such as a database, or a distributed key-value store.
 
 Uses the [haproxy](https://github.com/observing/haproxy) module to manage and
 control the HAProxy process.

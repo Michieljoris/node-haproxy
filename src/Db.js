@@ -43,16 +43,17 @@ var Db = module.exports = function(opts, cb) {
 };
 
 Db.prototype.writeStat = function writeStat(statObj) {
-    log(statObj);
+    // log(statObj);
     var key = [statObj.hostId, statObj.id, statObj.time].join('~');
     this.statsDb.put(key, statObj);
     this.trimStats();
 };
 
+var prev = {};
 Db.prototype.writeActivity = function writeActivity(activityObj) {
-  log(activityObj);
-  var key = [activityObj.time, activityObj.object].join('~');
-  this.activityDb.put(key, activityObj);
+    var key = [activityObj.time, activityObj.object].join('~');
+    this.activityDb.put(key, activityObj);
+    
 };
 
 Db.prototype.trimStats = function () {
@@ -84,7 +85,7 @@ Db.prototype.trimStats = function () {
         .on('end', function () {
             ws.end();
             var duration = Date.now()-startTime;
-            self.log(util.format('trimStats trimmed %s of %s in %sms (%s)', numKeysDeleted, numKeysConsidered, duration, (numKeysConsidered/duration)));
+            // self.log(util.format('trimStats trimmed %s of %s in %sms (%s)', numKeysDeleted, numKeysConsidered, duration, (numKeysConsidered/duration)));
             self.allowTrimmingIn(6000);
         })
         .on('error', function (err) {

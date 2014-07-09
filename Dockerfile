@@ -41,6 +41,8 @@ ADD docker/haproxy /usr/local/sbin/
 
 RUN useradd haproxy    
 
+# serf
+ADD docker/serf /usr/local/sbin
 
 # ADD docker/node /opt/node #one can add the node dir to the project instead perhaps
 
