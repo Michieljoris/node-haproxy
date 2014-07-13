@@ -2,3 +2,8 @@
 
 * bugs
 
+  http://jpetazzo.github.io/2013/10/16/configure-docker-bridge-network/
+  https://github.com/jpetazzo/pipework
+  https://blog.codecentric.de/en/2014/01/docker-networking-made-simple-3-ways-connect-lxc-containers/
+  http://blog.codeaholics.org/2013/giving-dockerlxc-containers-a-routable-ip-address/
+  http://goldmann.pl/blog/2014/01/30/assigning-ip-addresses-to-docker-containers-via-dhcp/

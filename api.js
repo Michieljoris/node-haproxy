@@ -249,7 +249,7 @@ haproxy.putBackend('backend1', {
         // "name": "myapp",
         // "version": "1.0.0",
         "host": "192.168.1.184",
-        "port": 8001
+        "port": 3000
         // "lastKnown": 1378762056885,
         // "meta": {
         //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-01",
@@ -258,19 +258,19 @@ haproxy.putBackend('backend1', {
         // },
         // "id": "/myapp/1.0.0/10.10.240.121/8080"
     },
-    {
-        // "name": "myapp",
-        // "version": "1.0.0",
-        "host": "192.168.1.184",
-        "port": 8002
-        // "lastKnown": 1378762060226,
-        // "meta": {
-        //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-02",
-        //     "pid": 18020,
-        //     "registered": 1378762079883
-        // },
-        // "id": "/myapp/1.0.0/10.10.240.80/8080"
-    }
+    // {
+    //     // "name": "myapp",
+    //     // "version": "1.0.0",
+    //     "host": "192.168.1.184",
+    //     "port": 8002
+    //     // "lastKnown": 1378762060226,
+    //     // "meta": {
+    //     //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-02",
+    //     //     "pid": 18020,
+    //     //     "registered": 1378762079883
+    //     // },
+    //     // "id": "/myapp/1.0.0/10.10.240.80/8080"
+    // }
         
     ] // if type = dynamic this is dynamically populated based on role/version subscription
     // otherwise expects { host: '10.10.10.10', port: 8080}
