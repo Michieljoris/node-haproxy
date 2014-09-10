@@ -22,24 +22,24 @@
 8 verbose parsed url   href: '.' }
 9 silly lockFile 3a52ce78- .
 10 verbose lock . /home/michieljoris/.npm/3a52ce78-.lock
-11 verbose tar pack [ '/home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz',
+11 verbose tar pack [ '/home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz',
 11 verbose tar pack   '.' ]
-12 verbose tarball /home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz
+12 verbose tarball /home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz
 13 verbose folder .
 14 info prepublish node-haproxy@0.1.10
 15 silly lockFile 1f1177db-tar tar://.
 16 verbose lock tar://. /home/michieljoris/.npm/1f1177db-tar.lock
-17 silly lockFile 76d2e00b-5639-0-35403248528018594-tmp-tgz tar:///home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz
-18 verbose lock tar:///home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz /home/michieljoris/.npm/76d2e00b-5639-0-35403248528018594-tmp-tgz.lock
+17 silly lockFile dc2ef4c6-44785-0-5463253618218005-tmp-tgz tar:///home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz
+18 verbose lock tar:///home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz /home/michieljoris/.npm/dc2ef4c6-44785-0-5463253618218005-tmp-tgz.lock
 19 silly lockFile 1f1177db-tar tar://.
 20 silly lockFile 1f1177db-tar tar://.
-21 silly lockFile 76d2e00b-5639-0-35403248528018594-tmp-tgz tar:///home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz
-22 silly lockFile 76d2e00b-5639-0-35403248528018594-tmp-tgz tar:///home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz
-23 verbose tar unpack /home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz
+21 silly lockFile dc2ef4c6-44785-0-5463253618218005-tmp-tgz tar:///home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz
+22 silly lockFile dc2ef4c6-44785-0-5463253618218005-tmp-tgz tar:///home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz
+23 verbose tar unpack /home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz
 24 silly lockFile 6a093de4--npm-node-haproxy-0-1-10-package tar:///home/michieljoris/.npm/node-haproxy/0.1.10/package
 25 verbose lock tar:///home/michieljoris/.npm/node-haproxy/0.1.10/package /home/michieljoris/.npm/6a093de4--npm-node-haproxy-0-1-10-package.lock
-26 silly lockFile 76d2e00b-5639-0-35403248528018594-tmp-tgz tar:///home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz
-27 verbose lock tar:///home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz /home/michieljoris/.npm/76d2e00b-5639-0-35403248528018594-tmp-tgz.lock
+26 silly lockFile dc2ef4c6-44785-0-5463253618218005-tmp-tgz tar:///home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz
+27 verbose lock tar:///home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz /home/michieljoris/.npm/dc2ef4c6-44785-0-5463253618218005-tmp-tgz.lock
 28 silly gunzTarPerm modes [ '755', '644' ]
 29 silly gunzTarPerm extractEntry package.json
 30 silly gunzTarPerm extractEntry .npmignore
@@ -76,8 +76,8 @@
 61 silly gunzTarPerm extractEntry haproxy.cfg
 62 silly lockFile 6a093de4--npm-node-haproxy-0-1-10-package tar:///home/michieljoris/.npm/node-haproxy/0.1.10/package
 63 silly lockFile 6a093de4--npm-node-haproxy-0-1-10-package tar:///home/michieljoris/.npm/node-haproxy/0.1.10/package
-64 silly lockFile 76d2e00b-5639-0-35403248528018594-tmp-tgz tar:///home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz
-65 silly lockFile 76d2e00b-5639-0-35403248528018594-tmp-tgz tar:///home/michieljoris/tmp/npm-26377-PTej0rsD/1410026845639-0.35403248528018594/tmp.tgz
+64 silly lockFile dc2ef4c6-44785-0-5463253618218005-tmp-tgz tar:///home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz
+65 silly lockFile dc2ef4c6-44785-0-5463253618218005-tmp-tgz tar:///home/michieljoris/tmp/npm-13559-A_KOgda5/1410322244785-0.5463253618218005/tmp.tgz
 66 silly lockFile 3a52ce78- .
 67 silly lockFile 3a52ce78- .
 68 silly publish { name: 'node-haproxy',
@@ -124,45 +124,42 @@
 69 verbose url raw node-haproxy
 70 verbose url resolving [ 'https://registry.npmjs.org/', './node-haproxy' ]
 71 verbose url resolved https://registry.npmjs.org/node-haproxy
-72 info trying registry request attempt 1 at 04:07:33
+72 info trying registry request attempt 1 at 14:10:52
 73 http PUT https://registry.npmjs.org/node-haproxy
-74 info retry will retry, error on last attempt: Error: read ECONNRESET
-75 info trying registry request attempt 2 at 23:52:32
-76 http PUT https://registry.npmjs.org/node-haproxy
-77 http 403 https://registry.npmjs.org/node-haproxy
-78 verbose headers { date: 'Sun, 07 Sep 2014 13:54:15 GMT',
-78 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
-78 verbose headers   'content-type': 'application/json',
-78 verbose headers   'cache-control': 'max-age=60',
-78 verbose headers   'content-length': '6076',
-78 verbose headers   'accept-ranges': 'bytes',
-78 verbose headers   via: '1.1 varnish',
-78 verbose headers   'x-served-by': 'cache-syd1620-SYD',
-78 verbose headers   'x-cache': 'MISS',
-78 verbose headers   'x-cache-hits': '0',
-78 verbose headers   'x-timer': 'S1410097966.926759,VS0,VE88390',
-78 verbose headers   'keep-alive': 'timeout=10, max=50',
-78 verbose headers   connection: 'Keep-Alive' }
-79 error publish Failed PUT 403
-80 error Error: forbidden cannot modify pre-existing version: 0.1.10
-80 error old={"name":"node-haproxy","description":"node-haproxy --------","homepage":"https://github.com/michieljoris/node-haproxy","keywords":[],"repository":{"type":"git","url":"https://github.com/michieljoris/node-haproxy.git"},"author":{"name":"Michiel van Oosten","email":"mail@axion5.net","url":"http://www.axion5.net/"},"licenses":[{"type":"MIT","url":"http://github.com/michieljoris/node-haproxy/blob/master/LICENSE.txt"}],"main":"src/node-haproxy.js","bin":{},"engines":{"node":">= 0.6.x"},"dependencies":{"fs-extra":"0.8.x","logthis":"*","crdt":"~3.5.1","handlebars":"~1.0.12","debounce":"0.0.2","deep-equal":"0.0.0","haproxy":"0.0.3","changeset":"0.0.5","optimist":"~0.6.0","xtend":"~2.0.6","extend":"~1.2.0","level":"~0.18.0","mkdirp":"~0.3.5"},"devDependencies":{"docco":"*"},"private":false,"scripts":{"docs":"node node_modules/.bin/docco src/node-haproxy.js"},"version":"0.1.10","bugs":{"url":"https://github.com/michieljoris/node-haproxy/issues"},"_id":"node-haproxy@0.1.10","_shasum":"26518593206cdeb1854edad2fb0bf581c50dba47","_from":".","_npmVersion":"1.4.9","_npmUser":{"name":"michieljoris","email":"mail@axion5.net"},"maintainers":[{"name":"michieljoris","email":"mail@axion5.net"}],"dist":{"shasum":"26518593206cdeb1854edad2fb0bf581c50dba47","tarball":"http://registry.npmjs.org/node-haproxy/-/node-haproxy-0.1.10.tgz"}}
-80 error new={"name":"node-haproxy","description":"node-haproxy --------","homepage":"https://github.com/michieljoris/node-haproxy","keywords":[],"repository":{"type":"git","url":"https://github.com/michieljoris/node-haproxy.git"},"author":{"name":"Michiel van Oosten","email":"mail@axion5.net","url":"http://www.axion5.net/"},"licenses":[{"type":"MIT","url":"http://github.com/michieljoris/node-haproxy/blob/master/LICENSE.txt"}],"main":"src/node-haproxy.js","bin":{},"engines":{"node":">= 0.6.x"},"dependencies":{"fs-extra":"0.8.x","logthis":"*","crdt":"~3.5.1","handlebars":"~1.0.12","debounce":"0.0.2","deep-equal":"0.0.0","haproxy":"0.0.3","changeset":"0.0.5","optimist":"~0.6.0","xtend":"~2.0.6","extend":"~1.2.0","level":"~0.18.0","mkdirp":"~0.3.5"},"devDependencies":{"docco":"*"},"private":false,"scripts":{"docs":"node node_modules/.bin/docco src/node-haproxy.js"},"version":"0.1.10","readme":"node-haproxy\u000a--------\u000a\u000aTODO:\u000a\u000a* README needs editing\u000a* Remove remaining thalassa cruft from api\u000a\u000aFunctionality and code lifted and adapted from\u000a[thalassa=aqueduct](https://github.com/PearsonEducation/thalassa-aqueduct)\u000a\u000aA node module to leverage HAProxy's ability to gracefully reload config without\u000aany interruption to user, in other words, without dropping any connections.\u000a\u000aBest run in a docker container, or run the process with root privileges.\u000a\u000aThe module can be used in a webserver that implements a rest api, as in the\u000athalassa-aqueduct implementation, or haproxy config info can come from another\u000asource, such as a database, or a distributed key-value store.\u000a\u000aUses the [haproxy](https://github.com/observing/haproxy) module to manage and\u000acontrol the HAProxy process.\u000a\u000a## HAProxy Fundamentals\u000a\u000aNode-haproxy does not try to obfuscate HAProxy, and it's important to know the fundamentals of how HAProxy works to understand node-haproxy. The API mirrors HAProxy's semantics. The [HAProxy documentation](http://cbonte.github.io/haproxy-dconv/configuration-1.4.html) contains a wealth of detailed information.\u000a\u000a1. **Frontends** - A \"frontend\" section describes a set of listening sockets accepting client\u000aconnections.\u000a\u000a2. **Backends** - A \"backend\" section describes a set of servers to which the proxy will connect\u000ato forward incoming connections.\u000a\u000a3. **Members/Servers** - node-haproxy calls the servers that *backends* route to \"members\". In other words, members of a backend pool of servers.\u000a\u000a4. **Config file** - At startup, HAProxy loads a configuration file and never looks at that file again. node-haproxy manages this by re-templating a new config file and gracefully restarting the HAProxy process.\u000a\u000a5. **Stats Socket** - a UNIX socket in stream mode that will return various statistics outputs and even allows some basic configuration tweaking like enabling and disabling existing backend members, setting weights, etc. node-haproxy connects to this socket and provides realtime streaming stats over a web socket stream.\u000a\u000a\u000a\u000aSTUB\u000a------\u000a\u000a\u000a[Description]\u000a\u000aInstall:\u000a\u000a    npm install node-haproxy\u000a\u0009\u000aAdd dependency to your project with\u000a\u000a    \"node-haproxy\": \"git@github.com/Michieljoris/node-haproxy\"\u000a\u0009\u000aor\u000a\u000a\u0009\"node-haproxy\": \"*\"\u000a\u000aRequire in a module:\u000a\u000a    var node-haproxy = require('node-haproxy');\u000a\u000aUse:\u000a\u000aSee [documentation](https://rawgithub.com/Michieljoris/node-haproxy/master/docs/node-haproxy.html).\u000a\u000a\u000a\u000a\u000a\u000a\u000a","readmeFilename":"README.md","bugs":{"url":"https://github.com/michieljoris/node-haproxy/issues"},"_id":"node-haproxy@0.1.10","_shasum":"26518593206cdeb1854edad2fb0bf581c50dba47","_from":".","_npmVersion":"1.4.9","_npmUser":{"name":"michieljoris","email":"mail@axion5.net"},"maintainers":[{"name":"michieljoris","email":"mail@axion5.net"}],"dist":{"shasum":"26518593206cdeb1854edad2fb0bf581c50dba47","tarball":"http://registry.npmjs.org/node-haproxy/-/node-haproxy-0.1.10.tgz"}}: node-haproxy
-80 error     at RegClient.<anonymous> (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:273:14)
-80 error     at Request._callback (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:211:65)
-80 error     at Request.self.callback (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/request/request.js:123:22)
-80 error     at Request.EventEmitter.emit (events.js:98:17)
-80 error     at Request.<anonymous> (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/request/request.js:893:14)
-80 error     at Request.EventEmitter.emit (events.js:117:20)
-80 error     at IncomingMessage.<anonymous> (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/request/request.js:844:12)
-80 error     at IncomingMessage.EventEmitter.emit (events.js:117:20)
-80 error     at _stream_readable.js:919:16
-80 error     at process._tickCallback (node.js:419:13)
-81 error If you need help, you may report this *entire* log,
-81 error including the npm and node versions, at:
-81 error     <http://github.com/npm/npm/issues>
-82 error System Linux 3.11.0-12-generic
-83 error command "/home/michieljoris/bin/node" "/home/michieljoris/bin/npm" "publish"
-84 error cwd /media/212gig/mysrc/javascript/node-haproxy
-85 error node -v v0.10.28
-86 error npm -v 1.4.9
-87 verbose exit [ 1, true ]
+74 http 403 https://registry.npmjs.org/node-haproxy
+75 verbose headers { date: 'Wed, 10 Sep 2014 04:12:21 GMT',
+75 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
+75 verbose headers   'content-type': 'application/json',
+75 verbose headers   'cache-control': 'max-age=60',
+75 verbose headers   'content-length': '6076',
+75 verbose headers   'accept-ranges': 'bytes',
+75 verbose headers   via: '1.1 varnish',
+75 verbose headers   'x-served-by': 'cache-syd1621-SYD',
+75 verbose headers   'x-cache': 'MISS',
+75 verbose headers   'x-cache-hits': '0',
+75 verbose headers   'x-timer': 'S1410322255.078756,VS0,VE86740',
+75 verbose headers   'keep-alive': 'timeout=10, max=50',
+75 verbose headers   connection: 'Keep-Alive' }
+76 error publish Failed PUT 403
+77 error Error: forbidden cannot modify pre-existing version: 0.1.10
+77 error old={"name":"node-haproxy","description":"node-haproxy --------","homepage":"https://github.com/michieljoris/node-haproxy","keywords":[],"repository":{"type":"git","url":"https://github.com/michieljoris/node-haproxy.git"},"author":{"name":"Michiel van Oosten","email":"mail@axion5.net","url":"http://www.axion5.net/"},"licenses":[{"type":"MIT","url":"http://github.com/michieljoris/node-haproxy/blob/master/LICENSE.txt"}],"main":"src/node-haproxy.js","bin":{},"engines":{"node":">= 0.6.x"},"dependencies":{"fs-extra":"0.8.x","logthis":"*","crdt":"~3.5.1","handlebars":"~1.0.12","debounce":"0.0.2","deep-equal":"0.0.0","haproxy":"0.0.3","changeset":"0.0.5","optimist":"~0.6.0","xtend":"~2.0.6","extend":"~1.2.0","level":"~0.18.0","mkdirp":"~0.3.5"},"devDependencies":{"docco":"*"},"private":false,"scripts":{"docs":"node node_modules/.bin/docco src/node-haproxy.js"},"version":"0.1.10","bugs":{"url":"https://github.com/michieljoris/node-haproxy/issues"},"_id":"node-haproxy@0.1.10","_shasum":"26518593206cdeb1854edad2fb0bf581c50dba47","_from":".","_npmVersion":"1.4.9","_npmUser":{"name":"michieljoris","email":"mail@axion5.net"},"maintainers":[{"name":"michieljoris","email":"mail@axion5.net"}],"dist":{"shasum":"26518593206cdeb1854edad2fb0bf581c50dba47","tarball":"http://registry.npmjs.org/node-haproxy/-/node-haproxy-0.1.10.tgz"}}
+77 error new={"name":"node-haproxy","description":"node-haproxy --------","homepage":"https://github.com/michieljoris/node-haproxy","keywords":[],"repository":{"type":"git","url":"https://github.com/michieljoris/node-haproxy.git"},"author":{"name":"Michiel van Oosten","email":"mail@axion5.net","url":"http://www.axion5.net/"},"licenses":[{"type":"MIT","url":"http://github.com/michieljoris/node-haproxy/blob/master/LICENSE.txt"}],"main":"src/node-haproxy.js","bin":{},"engines":{"node":">= 0.6.x"},"dependencies":{"fs-extra":"0.8.x","logthis":"*","crdt":"~3.5.1","handlebars":"~1.0.12","debounce":"0.0.2","deep-equal":"0.0.0","haproxy":"0.0.3","changeset":"0.0.5","optimist":"~0.6.0","xtend":"~2.0.6","extend":"~1.2.0","level":"~0.18.0","mkdirp":"~0.3.5"},"devDependencies":{"docco":"*"},"private":false,"scripts":{"docs":"node node_modules/.bin/docco src/node-haproxy.js"},"version":"0.1.10","readme":"node-haproxy\u000a--------\u000a\u000aTODO:\u000a\u000a* README needs editing\u000a* Remove remaining thalassa cruft from api\u000a\u000aFunctionality and code lifted and adapted from\u000a[thalassa=aqueduct](https://github.com/PearsonEducation/thalassa-aqueduct)\u000a\u000aA node module to leverage HAProxy's ability to gracefully reload config without\u000aany interruption to user, in other words, without dropping any connections.\u000a\u000aBest run in a docker container, or run the process with root privileges.\u000a\u000aThe module can be used in a webserver that implements a rest api, as in the\u000athalassa-aqueduct implementation, or haproxy config info can come from another\u000asource, such as a database, or a distributed key-value store.\u000a\u000aUses the [haproxy](https://github.com/observing/haproxy) module to manage and\u000acontrol the HAProxy process.\u000a\u000a## HAProxy Fundamentals\u000a\u000aNode-haproxy does not try to obfuscate HAProxy, and it's important to know the fundamentals of how HAProxy works to understand node-haproxy. The API mirrors HAProxy's semantics. The [HAProxy documentation](http://cbonte.github.io/haproxy-dconv/configuration-1.4.html) contains a wealth of detailed information.\u000a\u000a1. **Frontends** - A \"frontend\" section describes a set of listening sockets accepting client\u000aconnections.\u000a\u000a2. **Backends** - A \"backend\" section describes a set of servers to which the proxy will connect\u000ato forward incoming connections.\u000a\u000a3. **Members/Servers** - node-haproxy calls the servers that *backends* route to \"members\". In other words, members of a backend pool of servers.\u000a\u000a4. **Config file** - At startup, HAProxy loads a configuration file and never looks at that file again. node-haproxy manages this by re-templating a new config file and gracefully restarting the HAProxy process.\u000a\u000a5. **Stats Socket** - a UNIX socket in stream mode that will return various statistics outputs and even allows some basic configuration tweaking like enabling and disabling existing backend members, setting weights, etc. node-haproxy connects to this socket and provides realtime streaming stats over a web socket stream.\u000a\u000a\u000a\u000aSTUB\u000a------\u000a\u000a\u000a[Description]\u000a\u000aInstall:\u000a\u000a    npm install node-haproxy\u000a\u0009\u000aAdd dependency to your project with\u000a\u000a    \"node-haproxy\": \"git@github.com/Michieljoris/node-haproxy\"\u000a\u0009\u000aor\u000a\u000a\u0009\"node-haproxy\": \"*\"\u000a\u000aRequire in a module:\u000a\u000a    var node-haproxy = require('node-haproxy');\u000a\u000aUse:\u000a\u000aSee [documentation](https://rawgithub.com/Michieljoris/node-haproxy/master/docs/node-haproxy.html).\u000a\u000a\u000a\u000a\u000a\u000a\u000a","readmeFilename":"README.md","bugs":{"url":"https://github.com/michieljoris/node-haproxy/issues"},"_id":"node-haproxy@0.1.10","_shasum":"26518593206cdeb1854edad2fb0bf581c50dba47","_from":".","_npmVersion":"1.4.9","_npmUser":{"name":"michieljoris","email":"mail@axion5.net"},"maintainers":[{"name":"michieljoris","email":"mail@axion5.net"}],"dist":{"shasum":"26518593206cdeb1854edad2fb0bf581c50dba47","tarball":"http://registry.npmjs.org/node-haproxy/-/node-haproxy-0.1.10.tgz"}}: node-haproxy
+77 error     at RegClient.<anonymous> (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:273:14)
+77 error     at Request._callback (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:211:65)
+77 error     at Request.self.callback (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/request/request.js:123:22)
+77 error     at Request.EventEmitter.emit (events.js:98:17)
+77 error     at Request.<anonymous> (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/request/request.js:893:14)
+77 error     at Request.EventEmitter.emit (events.js:117:20)
+77 error     at IncomingMessage.<anonymous> (/media/212gig/opt/node-v0.10.28-linux-x64/lib/node_modules/npm/node_modules/request/request.js:844:12)
+77 error     at IncomingMessage.EventEmitter.emit (events.js:117:20)
+77 error     at _stream_readable.js:919:16
+77 error     at process._tickCallback (node.js:419:13)
+78 error If you need help, you may report this *entire* log,
+78 error including the npm and node versions, at:
+78 error     <http://github.com/npm/npm/issues>
+79 error System Linux 3.11.0-12-generic
+80 error command "/home/michieljoris/bin/node" "/home/michieljoris/bin/npm" "publish"
+81 error cwd /media/212gig/mysrc/javascript/node-haproxy
+82 error node -v v0.10.28
+83 error npm -v 1.4.9
+84 verbose exit [ 1, true ]
