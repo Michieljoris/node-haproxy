@@ -20,8 +20,7 @@ var assert = require('assert')
 , extend = require('extend')
 , Path = require('path')
 , fs = require('fs-extra')
-, util = require('util')
-, ipcClient = require('./ipc-client');
+, util = require('util');
 
 var tempDir = Path.join(__dirname, '../temp');
 
@@ -64,6 +63,7 @@ function ipc(api) {
           var error, result;
           if (!api[data.call]) error = "No such function: " + data.call;
           else result = api[data.call].apply(null, data.args);
+          console.log(data.call);
           ipc.server.emit(
             socket,
             'result',

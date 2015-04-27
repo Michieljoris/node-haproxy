@@ -43,7 +43,7 @@ module.exports = function(call, args, callback) {
   );
 };
 
-//test
+// test
 // module.exports('getFrontends', [], function(error, result) {
 //   console.log(error, result);
 // });
