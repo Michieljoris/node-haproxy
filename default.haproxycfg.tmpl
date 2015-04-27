@@ -2,9 +2,9 @@ global
   log 127.0.0.1 local0
   log 127.0.0.1 local1 notice
   daemon
-  maxconn 4096
-  user haproxy
-  group haproxy
+  maxconn 1000 ## watch out for ulimit max
+  # user haproxy
+  # group haproxy
   # stats socket {{haproxySocketPath}} user USER_RUNNING_NODE_PROCESS level admin
   stats socket {{haproxySocketPath}} level admin
 
@@ -13,7 +13,7 @@ global
     option dontlognull
     option redispatch
     retries 3
-    maxconn 2000
+    maxconn 1000
     timeout connect 5000ms
     timeout client 50000ms
     timeout server 50000ms

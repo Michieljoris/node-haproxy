@@ -4,5 +4,8 @@ node_modules
 npm-debug.log 
 .#*
 db
+haproxy.pid
+haproxy.status.sock
+persisted
 
 

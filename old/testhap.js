@@ -27,7 +27,7 @@ var defaults = {
     sudo: 'use sudo when starting haproxy'
 };
 
-log('hello');
+log('hello', defaults);
 
 
 var opts = defaults;
