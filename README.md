@@ -1,10 +1,6 @@
 node-haproxy
 --------
 
-TODO:
-
-* README needs editing
-* Remove remaining thalassa cruft from api
 
 Functionality and code lifted and adapted from
 [thalassa=aqueduct](https://github.com/PearsonEducation/thalassa-aqueduct)
@@ -47,7 +43,7 @@ STUB
 
 Install:
 
-    npm install node-haproxy
+    npm install -g node-haproxy
 	
 Add dependency to your project with
 
@@ -70,3 +66,7 @@ See [documentation](https://rawgithub.com/Michieljoris/node-haproxy/master/docs/
 
 
 
+
+TODO:
+
+* Remove remaining thalassa cruft from api

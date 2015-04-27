@@ -8,9 +8,6 @@ var crdt = require('crdt')
   , extend = require('xtend')
   ;
 
-
-log('hello');
-
 var Data = module.exports = function Data (opts) {
   if (!opts) opts = {};
 

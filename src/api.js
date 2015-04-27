@@ -9,34 +9,66 @@ require('logthis').config({ _on: true,
 var log = require('logthis').logger._create('api');
 
 var assert = require('assert')
-  , resolve = require('path').resolve
-  , Haproxy = require('haproxy')
-  , Data = require('../src/Data')
-  , Db = require('../src/Db')
-  , HaproxyManager = require('../src/HaproxyManager')
-  , HaproxyStats = require('../src/HaproxyStats')
-  , extend = require('extend')
-  , Path = require('path');
+, resolve = require('path').resolve
+, Haproxy = require('haproxy')
+, Data = require('../src/Data')
+, Db = require('../src/Db')
+, HaproxyManager = require('../src/HaproxyManager')
+, HaproxyStats = require('../src/HaproxyStats')
+, extend = require('extend')
+, Path = require('path')
+, fs = require('fs-extra')
+, util = require('util');
+
+var tempDir = Path.join(__dirname, '../temp');
+
+fs.ensureDirSync(tempDir);
+                 
+var firstStart = true;
 
 var defaults = {
-  host: '0.0.0.0',
-  port: 10000,
-
   // haproxySocketPath: '/tmp/haproxy.status.sock',
   // haproxyPidPath: '/var/run/haproxy.pid',
   // haproxyCfgPath: '/etc/haproxy/haproxy.cfg',
   // sudo: 'use sudo when starting haproxy',
 
-  haproxySocketPath: Path.join(__dirname, '../temp/haproxy.status.sock'),
-  haproxyPidPath: Path.join(__dirname, '../temp/haproxy.pid'),
-  haproxyCfgPath: Path.join(__dirname, '../temp/haproxy.cfg'),
+  haproxySocketPath: Path.join(tempDir, 'haproxy.status.sock'),
+  haproxyPidPath: Path.join(tempDir, 'haproxy.pid'),
+  haproxyCfgPath: Path.join(tempDir, 'haproxy.cfg'),
 
   templateFile: Path.join(__dirname, '../haproxycfg.tmpl'),
-  persistence: Path.join(__dirname, '../temp/persisted'),
-  dbPath:  Path.join(__dirname, '../temp/db')
+  persistence: Path.join(tempDir, 'persisted'),
+  dbPath:  Path.join(tempDir, 'db'),
+  which: Path.join(__dirname, '../haproxy'), //if undefined tries to find haproxy on system 
+  flic: false  //true or port
 };
 
-module.exports = function(opts) {
+function flic(api, port) {
+  var flic = require('flic');
+  var Bridge = flic.bridge;
+  var Node = flic.node;
+ 
+  // Default port is 8221 
+  port = typeof port === 'number' ? port : 8221;
+
+  // Bridge can be in any process, and nodes can be in any process 
+  var bridge = new Bridge();
+  // var bridge = new Bridge(port); //not working???
+ 
+  var node = new Node('haproxy', function(err){
+    if (err)  log._e(err);
+    else log._i('node-haproxy is online!');
+  });
+
+  node.on('call', function(fn, param1, param2,  callback){
+    console.log(fn, param1, param2); 
+    if (api[fn]) callback(null, api[fn](param1, param2));
+    else callback('No such function: ' + fn, null);
+  });
+ 
+}
+
+module.exports =  function(opts) {
   var data, haproxyManager;
   opts = extend(defaults, opts);
     
@@ -48,8 +80,8 @@ module.exports = function(opts) {
   var haproxy = new Haproxy(opts.haproxySocketPath, {
     config:  resolve(opts.haproxyCfgPath),
     pidFile: resolve(opts.haproxyPidPath),
-    prefix: (opts.sudo) ? 'sudo' : undefined
-    // ,which: __dirname + '/bin/haproxy'
+    prefix: (opts.sudo) ? 'sudo' : undefined,
+    which: opts.which
   });
 
   haproxyManager = new HaproxyManager({
@@ -98,6 +130,11 @@ module.exports = function(opts) {
   haproxyManager.on('reloaded', function (statObj) {
     var activityObj = { type: 'activity',  time: Date.now(), verb: 'haproxyRestarted' };
     log('reloaded\n', activityObj);
+    if (firstStart) {
+      log._i('Running..');
+      firstStart = false;
+      if (opts.flic) flic(api, opts.flic);
+    }
     db.writeActivity(activityObj); 
   });
     
@@ -176,6 +213,7 @@ module.exports = function(opts) {
   return api;
 };
 
+
 // api.validatepostbackendsubscription = function () {
 //   return {
 //     payload: {
@@ -227,72 +265,75 @@ module.exports = function(opts) {
 //   };
 // };
 
-var haproxy = module.exports();
-log(haproxy.getBackends);
-setTimeout(function() {
-  haproxy.putBackend('backend2', {
-    // "type" : "dynamic|static" 
-    "type" : "static" 
-    // , "name" : "foo" // only required if type = dynamic
-    // , "version" : "1.0.0" // only required if type = dynamic
-    // , "balance" : "roundrobin|source" // defaults to roundrobin
-    // , "host" : "myapp.com"  // default: undefined, if specified request to member will contain this host header
-    // , "health" : {                 // optional health check
-    //     "method": "GET"            // HTTP method
-    //     , "uri": "/checkity-check"   // URI to call
-    //     , "httpVersion": "HTTP/1.0"  // HTTP/1.0 or HTTP/1.1 `host` required if HTTP/1.1
-    //     , "interval": 5000           // period to check, milliseconds
-    // }
-    // , "mode" : "http|tcp" // default: http
-    , "natives": []  // array of strings of raw config USE SPARINGLY!!
-    , "members" : [
-      {
-        // "name": "myapp",
-        // "version": "1.0.0",
-        "host": "192.168.1.184",
-        "port": 3000
-        // "lastKnown": 1378762056885,
-        // "meta": {
-        //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-01",
-        //     "pid": 17941,
-        //     "registered": 1378740834616
-        // },
-        // "id": "/myapp/1.0.0/10.10.240.121/8080"
-      },
-      // {
-      //     // "name": "myapp",
-      //     // "version": "1.0.0",
-      //     "host": "192.168.1.184",
-      //     "port": 8002
-      //     // "lastKnown": 1378762060226,
-      //     // "meta": {
-      //     //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-02",
-      //     //     "pid": 18020,
-      //     //     "registered": 1378762079883
-      //     // },
-      //     // "id": "/myapp/1.0.0/10.10.240.80/8080"
-      // }
+var haproxy = module.exports({ flic: true });
+// log(haproxy.getBackends);
+// setTimeout(function() {
+//   return;
+//   haproxy.putBackend('backend1', {
+//     // "type" : "dynamic|static" 
+//     "type" : "static" 
+//     // , "name" : "foo" // only required if type = dynamic
+//     // , "version" : "1.0.0" // only required if type = dynamic
+//     // , "balance" : "roundrobin|source" // defaults to roundrobin
+//     // , "host" : "myapp.com"  // default: undefined, if specified request to member will contain this host header
+//     // , "health" : {                 // optional health check
+//     //     "method": "GET"            // HTTP method
+//     //     , "uri": "/checkity-check"   // URI to call
+//     //     , "httpVersion": "HTTP/1.0"  // HTTP/1.0 or HTTP/1.1 `host` required if HTTP/1.1
+//     //     , "interval": 5000           // period to check, milliseconds
+//     // }
+//     // , "mode" : "http|tcp" // default: http
+//     , "natives": []  // array of strings of raw config USE SPARINGLY!!
+//     , "members" : [
+//       {
+//         // "name": "myapp",
+//         // "version": "1.0.0",
+//         "host": "192.168.1.184",
+//         "port": 3000
+//         // "lastKnown": 1378762056885,
+//         // "meta": {
+//         //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-01",
+//         //     "pid": 17941,
+//         //     "registered": 1378740834616
+//         // },
+//         // "id": "/myapp/1.0.0/10.10.240.121/8080"
+//       },
+//       // {
+//       //     // "name": "myapp",
+//       //     // "version": "1.0.0",
+//       //     "host": "192.168.1.184",
+//       //     "port": 8002
+//       //     // "lastKnown": 1378762060226,
+//       //     // "meta": {
+//       //     //     "hostname": "dev-use1b-pr-01-myapp-01x00x00-02",
+//       //     //     "pid": 18020,
+//       //     //     "registered": 1378762079883
+//       //     // },
+//       //     // "id": "/myapp/1.0.0/10.10.240.80/8080"
+//       // }
         
-    ] // if type = dynamic this is dynamically populated based on role/version subscription
-    // otherwise expects { host: '10.10.10.10', port: 8080}
-  });
+//     ] // if type = dynamic this is dynamically populated based on role/version subscription
+//     // otherwise expects { host: '10.10.10.10', port: 8080}
+//   });
 
-  haproxy.putFrontend('www1', {
-    "bind": "*:10000" // IP and ports to bind to, comma separated, host may be *
-    , "backend": "backend1"      // the default backend to route to, it must be defined already
-    , "mode": "http"         // default: http, expects tcp|http
-    , "keepalive": "close"  // default: "default", expects default|close|server-close
-    , "rules": []           // array of rules, see next section
-    , "natives": []         // array of strings of raw config USE SPARINGLY!!
-  });
+//   haproxy.putFrontend('www1', {
+//     "bind": "*:10000" // IP and ports to bind to, comma separated, host may be *
+//     , "backend": "backend1"      // the default backend to route to, it must be defined already
+//     , "mode": "http"         // default: http, expects tcp|http
+//     , "keepalive": "close"  // default: "default", expects default|close|server-close
+//     , "rules": []           // array of rules, see next section
+//     , "natives": []         // array of strings of raw config USE SPARINGLY!!
+//   });
 
 
 
-  var r = haproxy.getBackends();
+//   var r = haproxy.getBackends();
+//   var f = haproxy.getFrontends();
 
-  log('BACKENDS-=-------------------:\n', r);
+//   log('BACKENDS-=-------------------:\n', util.inspect(r, { colors: true, depth:10 }));
+//   log('FRONTENDS-=-------------------:\n', util.inspect(f, { colors: true, depth:10 }));
 
-}, 5000);
+// }, 5000);
 //test
 // setInterval(function() {
 

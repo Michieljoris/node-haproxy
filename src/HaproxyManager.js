@@ -57,7 +57,7 @@ HAProxyManager.prototype.writeConfig = function() {
   var previousConfig = this.latestConfig;
   this.latestConfig = this.template(data);
 
-    log('writing config!!!!!!!!!!!!!!!!!!!', this.latestConfig);
+    log('Writing config\n', this.latestConfig);
   // only write the config and reload if it actually changed
   if (!deepEqual(previousConfig, this.latestConfig)) {
     fs.writeFileSync(this.config.haproxyCfgPath, this.latestConfig , 'utf-8');

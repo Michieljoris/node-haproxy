@@ -18,25 +18,29 @@
       "url": "http://github.com/michieljoris/node-haproxy/blob/master/LICENSE.txt"
     }
   ],
-  "main": "src/node-haproxy.js",
-  "bin": {},
+  "main": "src/api.js",
+  "bin": {
+    "node-haproxy": "bin/node-haproxy.js"
+  },
   "engines": {
     "node": ">= 0.6.x"
   },
   "dependencies": {
-    "fs-extra": "0.8.x",
-    "logthis": "*",
+    "changeset": "0.0.5",
     "crdt": "~3.5.1",
-    "handlebars": "~1.0.12",
     "debounce": "0.0.2",
     "deep-equal": "0.0.0",
-    "haproxy": "0.0.3",
-    "changeset": "0.0.5",
-    "optimist": "~0.6.0",
-    "xtend": "~2.0.6",
     "extend": "~1.2.0",
+    "flic": "^1.1.2",
+    "fs-extra": "0.18.x",
+    "handlebars": "~1.0.12",
+    "haproxy": "0.0.3",
     "level": "~0.18.0",
-    "mkdirp": "~0.3.5"
+    "logthis": "*",
+    "mkdirp": "~0.3.5",
+    "node-ipc": "^1.1.13",
+    "optimist": "~0.6.0",
+    "xtend": "~2.0.6"
   },
   "devDependencies": {
     "docco": "*"
@@ -45,5 +49,5 @@
   "scripts": {
     "docs": "node node_modules/.bin/docco src/node-haproxy.js"
   },
-  "version": "0.1.10"
+  "version": "0.1.19"
 }

@@ -7,7 +7,6 @@ var level = require('level')
   , mkdirp = require('mkdirp')
   ;
 
-log('hello');
 // opts:
 //    - dbPath
 //    - secondsToRetainStats
@@ -31,11 +30,9 @@ var Db = module.exports = function(opts, cb) {
 
         var statsDbPath = path.join(dbPath, 'statsDb');
         self.statsDb = level(statsDbPath, { valueEncoding : 'json' });
-        self.log('statsDbPath=' + statsDbPath);
 
         var activityDbPath = path.join(dbPath, 'activityDb');
         self.activityDb = level(activityDbPath, { valueEncoding : 'json' });
-        self.log('activityDbPath=' + activityDbPath);
         if (typeof cb === 'function') cb();
 
     });

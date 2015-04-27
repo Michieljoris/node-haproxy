@@ -10,10 +10,6 @@ var handlebars = require('handlebars')
   , deepEqual = require('deep-equal')
   ;
 
-
-
-log('hello');
-
 var HaproxyStats = module.exports = function HaproxyStats (opts) {
   if (typeof opts !== 'object') opts = {};
 
