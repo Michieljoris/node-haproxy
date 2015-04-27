@@ -3,11 +3,7 @@ node_modules
 !node_modules/node-static
 npm-debug.log 
 .#*
-db
-haproxy.pid
-haproxy.cfg
-haproxy.status.sock
-persisted
+temp/*
 
 
 

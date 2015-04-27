@@ -11,12 +11,12 @@ var log = require('logthis').logger._create('api');
 var assert = require('assert')
   , resolve = require('path').resolve
   , Haproxy = require('haproxy')
-  , Data = require('./src/Data')
-  , Db = require('./src/Db')
-  , HaproxyManager = require('./src/HaproxyManager')
-  , HaproxyStats = require('./src/HaproxyStats')
+  , Data = require('../src/Data')
+  , Db = require('../src/Db')
+  , HaproxyManager = require('../src/HaproxyManager')
+  , HaproxyStats = require('../src/HaproxyStats')
   , extend = require('extend')
-  ;
+  , Path = require('path');
 
 var defaults = {
   host: '0.0.0.0',
@@ -27,13 +27,13 @@ var defaults = {
   // haproxyCfgPath: '/etc/haproxy/haproxy.cfg',
   // sudo: 'use sudo when starting haproxy',
 
-  haproxySocketPath: __dirname + '/haproxy.status.sock',
-  haproxyPidPath: __dirname + '/haproxy.pid',
-  haproxyCfgPath: __dirname + '/haproxy.cfg',
+  haproxySocketPath: Path.join(__dirname, '../temp/haproxy.status.sock'),
+  haproxyPidPath: Path.join(__dirname, '../temp/haproxy.pid'),
+  haproxyCfgPath: Path.join(__dirname, '../temp/haproxy.cfg'),
 
-  templateFile: __dirname + '/default.haproxycfg.tmpl',
-  persistence: __dirname + '/persisted',
-  dbPath:  __dirname + '/db'
+  templateFile: Path.join(__dirname, '../haproxycfg.tmpl'),
+  persistence: Path.join(__dirname, '../temp/persisted'),
+  dbPath:  Path.join(__dirname, '../temp/db')
 };
 
 module.exports = function(opts) {
