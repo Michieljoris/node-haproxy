@@ -163,7 +163,7 @@ module.exports = {
   //     npm run-script docs
   "scripts": {
     // "docs": "node node_modules/.bin/doccoh package.js"
-    "docs": "node node_modules/.bin/docco src/node-haproxy.js"
+    "docs": "node_modules/.bin/docco src/api.js"
   }
 };
 

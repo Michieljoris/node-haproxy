@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>api.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>api.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">require</span>(<span class="hljs-string">'logthis'</span>).config({ _on: <span class="hljs-literal">true</span>,
+                            <span class="hljs-string">'Data'</span>: <span class="hljs-string">'debug'</span> ,
+                            <span class="hljs-string">'HaproxyManager'</span>: <span class="hljs-string">'debug'</span> ,
+                            <span class="hljs-string">'HaproxyStats'</span>: <span class="hljs-string">'debug'</span>,
+                            <span class="hljs-string">'Db'</span>: <span class="hljs-string">'debug'</span>,
+                            <span class="hljs-string">'api'</span>: <span class="hljs-string">'debug'</span>
+                          });
+
+<span class="hljs-keyword">var</span> log = <span class="hljs-built_in">require</span>(<span class="hljs-string">'logthis'</span>).logger._create(<span class="hljs-string">'api'</span>);
+
+<span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">'assert'</span>)
+, resolve = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>).resolve
+, Haproxy = <span class="hljs-built_in">require</span>(<span class="hljs-string">'haproxy'</span>)
+, Data = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/Data'</span>)
+, Db = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/Db'</span>)
+, HaproxyManager = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/HaproxyManager'</span>)
+, HaproxyStats = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/HaproxyStats'</span>)
+, extend = <span class="hljs-built_in">require</span>(<span class="hljs-string">'extend'</span>)
+, Path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>)
+, fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs-extra'</span>)
+, util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'util'</span>);
+
+<span class="hljs-keyword">var</span> tempDir = Path.join(__dirname, <span class="hljs-string">'../temp'</span>);
+
+fs.ensureDirSync(tempDir);
+                 
+<span class="hljs-keyword">var</span> firstStart = <span class="hljs-literal">true</span>;
+
+<span class="hljs-keyword">var</span> defaults = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Alternative configuration:</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <pre><code>haproxySocketPath: <span class="hljs-string">'/tmp/haproxy.status.sock'</span>,
+haproxyPidPath: <span class="hljs-string">'/var/run/haproxy.pid'</span>,
+haproxyCfgPath: <span class="hljs-string">'/etc/haproxy/haproxy.cfg'</span>,
+sudo: <span class="hljs-string">'use sudo when starting haproxy'</span>,
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  haproxySocketPath: Path.join(tempDir, <span class="hljs-string">'haproxy.status.sock'</span>),
+  haproxyPidPath: Path.join(tempDir, <span class="hljs-string">'haproxy.pid'</span>),
+  haproxyCfgPath: Path.join(tempDir, <span class="hljs-string">'haproxy.cfg'</span>),
+
+  templateFile: Path.join(__dirname, <span class="hljs-string">'../haproxycfg.tmpl'</span>),
+  persistence: Path.join(tempDir, <span class="hljs-string">'persisted'</span>),
+  dbPath:  Path.join(tempDir, <span class="hljs-string">'db'</span>),
+  which: Path.join(__dirname, <span class="hljs-string">'../haproxy'</span>), <span class="hljs-comment">//if undefined tries to find haproxy on system </span>
+  ipc: <span class="hljs-literal">false</span>  
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ipc</span><span class="hljs-params">(api)</span> </span>{
+  <span class="hljs-keyword">var</span> ipc=<span class="hljs-built_in">require</span>(<span class="hljs-string">'node-ipc'</span>);
+
+  ipc.config.id   = <span class="hljs-string">'haproxy'</span>;
+  ipc.config.retry= <span class="hljs-number">1500</span>;
+  ipc.config.silent = <span class="hljs-literal">true</span>;
+
+  ipc.serve(
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+      ipc.server.on(
+        <span class="hljs-string">'api'</span>,
+        <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data,socket)</span></span>{
+          log(data);
+          <span class="hljs-keyword">var</span> error, result;
+          <span class="hljs-keyword">if</span> (!api[data.call]) error = <span class="hljs-string">"No such function: "</span> + data.call;
+          <span class="hljs-keyword">else</span> result = api[data.call].apply(<span class="hljs-literal">null</span>, data.args);
+          ipc.server.emit(
+            socket,
+            <span class="hljs-string">'result'</span>,
+            {
+              id      : ipc.config.id,
+              data : result,
+              error: error
+            }
+          );
+        }
+      );
+    }
+  );
+
+  ipc.server.start();
+  log._i(<span class="hljs-string">'ipc server started'</span>);
+}
+
+<span class="hljs-built_in">module</span>.exports =  <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(opts)</span> </span>{
+  <span class="hljs-keyword">var</span> data, haproxyManager;
+  opts = extend(defaults, opts);
+    
+  data = <span class="hljs-keyword">new</span> Data( {
+    persistence: opts.persistence, <span class="hljs-comment">//file location</span>
+    log: log
+  });
+
+  <span class="hljs-keyword">var</span> haproxy = <span class="hljs-keyword">new</span> Haproxy(opts.haproxySocketPath, {
+    config:  resolve(opts.haproxyCfgPath),
+    pidFile: resolve(opts.haproxyPidPath),
+    prefix: (opts.sudo) ? <span class="hljs-string">'sudo'</span> : <span class="hljs-literal">undefined</span>,
+    which: opts.which
+  });
+
+  haproxyManager = <span class="hljs-keyword">new</span> HaproxyManager({
+    haproxy: haproxy,
+    data: data,
+    haproxyCfgPath: opts.haproxyCfgPath,
+
+    templateFile: opts.templateFile,
+    sudo: opts.sudo,
+    log: log
+  });
+
+  <span class="hljs-keyword">var</span> haproxyStats = <span class="hljs-keyword">new</span> HaproxyStats({
+    haproxy: haproxy,
+    data: data,
+    log: log
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Stream stats into a leveldb</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> db = <span class="hljs-keyword">new</span> Db(opts, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    db.writeActivity({ type: <span class="hljs-string">'activity'</span>,  time: <span class="hljs-built_in">Date</span>.now(), verb: <span class="hljs-string">'started'</span>});
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Wire up stats to write to stats db</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  haproxyStats.on(<span class="hljs-string">'stat'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(statObj)</span> </span>{
+    db.writeStat(statObj);
+    
+    <span class="hljs-keyword">if</span> (statObj.type === <span class="hljs-string">'frontend'</span>) {
+      data.setFrontendStat(statObj);
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (statObj.type === <span class="hljs-string">'backend'</span>) {
+      data.setBackendStat(statObj);
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (statObj.type === <span class="hljs-string">'backendMember'</span>) {
+      data.setBackendMemberStat(statObj);
+    }
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Wire up haproxy changes to write to activity db</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  haproxyManager.on(<span class="hljs-string">'configChanged'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(statObj)</span> </span>{
+    <span class="hljs-keyword">var</span> activityObj = { type: <span class="hljs-string">'activity'</span>,  time: <span class="hljs-built_in">Date</span>.now(), verb: <span class="hljs-string">'haproxyConfigChanged'</span>};
+    log(<span class="hljs-string">'configChanged\n'</span>, activityObj);
+    db.writeActivity(activityObj);
+  });
+
+  haproxyManager.on(<span class="hljs-string">'reloaded'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(statObj)</span> </span>{
+    <span class="hljs-keyword">var</span> activityObj = { type: <span class="hljs-string">'activity'</span>,  time: <span class="hljs-built_in">Date</span>.now(), verb: <span class="hljs-string">'haproxyRestarted'</span> };
+    log(<span class="hljs-string">'reloaded\n'</span>, activityObj);
+    <span class="hljs-keyword">if</span> (firstStart) {
+      log._i(<span class="hljs-string">'Running..'</span>);
+      firstStart = <span class="hljs-literal">false</span>;
+      <span class="hljs-keyword">if</span> (opts.ipc) ipc(api);
+    }
+    db.writeActivity(activityObj); 
+  });
+    
+    <span class="hljs-keyword">var</span> api = {};
+
+  api.getFrontend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> </span>{
+    <span class="hljs-keyword">var</span> id = data.frontendId(key);
+    <span class="hljs-keyword">var</span> row = data.frontends.get(id);
+    <span class="hljs-keyword">return</span> row ? row.toJSON() : <span class="hljs-literal">null</span>;
+  };
+
+  api.getBackend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> </span>{
+    <span class="hljs-keyword">var</span> id = data.backendId(key);
+    <span class="hljs-keyword">var</span> row = data.backends.get(id);
+    <span class="hljs-keyword">return</span> row ? row.toJSON() : <span class="hljs-literal">null</span>;
+  };
+
+  api.getBackendMembers = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> </span>{
+    <span class="hljs-keyword">var</span> id = data.backendId(key);
+    <span class="hljs-keyword">var</span> row = data.backends.get(id);
+    <span class="hljs-keyword">return</span> row ?  row.toJSON().members : <span class="hljs-literal">null</span>;
+  };
+
+  api.getFrontends = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> data.frontends.toJSON();
+  };
+
+  api.getBackends = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> data.backends.toJSON();
+  };
+
+  api.putFrontend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, obj)</span> </span>{
+    <span class="hljs-keyword">var</span> id = data.frontendId(key);
+    obj.key = key;
+    data.setFrontend(obj);
+  };
+
+  api.putBackend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, obj)</span> </span>{
+    <span class="hljs-keyword">var</span> id = data.backendId(key);
+    obj.key = key;
+    <span class="hljs-keyword">if</span> (obj.health &amp;&amp; obj.health.httpVersion === <span class="hljs-string">'http/1.1'</span> &amp;&amp; !obj.host) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'host is required with health check with httpversion=http/1.1'</span>);
+    }
+    data.setBackend(obj);
+  };
+
+  api.deleteFrontend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> </span>{
+    <span class="hljs-keyword">var</span> id = data.frontendId(key);
+    <span class="hljs-keyword">var</span> row = data.frontends.get(id);
+    log(<span class="hljs-string">'frontend '</span> + key + <span class="hljs-string">' not found'</span>);
+    data.frontends.rm(id);
+  };
+
+  api.deleteBackend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> </span>{
+    <span class="hljs-keyword">var</span> id = data.backendId(key);
+    <span class="hljs-keyword">var</span> row = data.backends.get(id);
+    log(<span class="hljs-string">'backend '</span> + key + <span class="hljs-string">' not found'</span>);
+    data.backends.rm(id);
+  };
+
+  api.postBackendSubscription = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, obj)</span> </span>{
+    <span class="hljs-keyword">var</span> id = data.backendId(key);
+    <span class="hljs-keyword">var</span> row = data.backends.get(id);
+    <span class="hljs-keyword">if</span> (!row) <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'backend '</span> + key + <span class="hljs-string">' not found'</span>);
+    <span class="hljs-keyword">var</span> backend = extend(<span class="hljs-literal">true</span>, {}, row.toJSON());
+    backend.version = obj.version;
+    <span class="hljs-keyword">if</span> (obj.name) backend.name = obj.name;
+    data.setBackend(backend);
+  };
+
+  api.getHaproxyConfig = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> haproxyManager.latestConfig;
+    };
+
+  <span class="hljs-keyword">return</span> api;
+};
+
+
+<span class="hljs-built_in">module</span>.exports({ ipc: <span class="hljs-literal">true</span> });</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
