@@ -6,7 +6,7 @@ Set, modify and hot load haproxy configuration from node.
 Functionality and code lifted and adapted from
 [thalassa=aqueduct](https://github.com/PearsonEducation/thalassa-aqueduct). 
 
-You can run this module standalone (`npm install -g node-haproxy; node-haproxy`) and
+You can run this module standalone (`npm install -g node-haproxy; node-haproxy --ipc`) and
 communicate with it using ipc (`var ipcClient = require ('node-haproxy/src/ipc-client'`) 
 or use the api directly (`var haproxy = require('node-haproxy'`).
 

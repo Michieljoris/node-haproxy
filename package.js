@@ -123,7 +123,8 @@ module.exports = {
     "extend": "~1.2.0",
     "level": "~0.18.0",
     "mkdirp": "~0.3.5",
-    "flic": "^1.1.2"
+    "flic": "^1.1.2",
+    "node-ipc": "^1.1.13"
     // "redis": "^0.12.1"
     // "split": "~0.2.10",
     // "browserify": "~2.25.1",
