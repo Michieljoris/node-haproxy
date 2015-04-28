@@ -57,14 +57,28 @@ to forward incoming connections.
       --ipc                start up ipc server
 
 The following functions can be invoked on the required node-haproxy module or
-using the ipc-client (`ipcClient(functionName, args, callback`).
+using the ipc-client (`ipcClient(functionName, args`), which uses promises:
+Don't forget to call ipcClient.close() if you want to stop the node process..
 
 Example of using the ipc-client:
 
-    ipcClient('getFrontend', ['myapp'], function(error, result) {
-        if (error) console.log(error);
-        else console.log(result);
-    });
+    ipcClient('getFrontends', [])
+      .when(
+        function(result) {
+          console.log("Frontends\n", result);
+          return ipcClient('getBackends', []);
+        })
+      .when(
+        function(result) {
+          console.log("Backends\n", result);
+          ipcClient.close();
+        },
+        function(error) {
+          console.log("Error\n", error);
+          ipcClient.close();
+        }
+
+      );
 
 ### getFrontends()
 
