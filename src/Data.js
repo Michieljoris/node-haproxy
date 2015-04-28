@@ -8,6 +8,7 @@ var crdt = require('crdt')
   , extend = require('xtend')
   ;
 
+
 var Data = module.exports = function Data (opts) {
   if (!opts) opts = {};
 
@@ -54,6 +55,7 @@ Data.prototype.setFrontend = function(obj) {
     , keepalive : obj.keepalive || 'default' // default|close|server-close, default default
     , rules     : obj.rules || [] // TODO validate each rule
     , natives   : obj.natives || []
+    , uuid      : obj.uuid || ''
   };
 
   stripUndefinedProps(frontend);
@@ -62,6 +64,7 @@ Data.prototype.setFrontend = function(obj) {
 
 Data.prototype.setBackend = function(obj) {
   assert(typeof obj.key === 'string' && obj.key.length > 0);
+  obj.type = obj.type || 'static';
   assert(obj.type === 'dynamic' || obj.type === 'static');
   var id = this.backendId(obj.key);
   if (obj.id) assert.equal(obj.id, id, 'key must correspond with id');
@@ -78,6 +81,7 @@ Data.prototype.setBackend = function(obj) {
     , mode    : obj.mode || 'http'
     , members : (Array.isArray(obj.members)) ? obj.members : []
     , natives : obj.natives || []
+    , uuid      : obj.uuid || ''
   };
 
   stripUndefinedProps(backend);

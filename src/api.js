@@ -1,4 +1,4 @@
-var logLevel = 'info';
+var logLevel = 'debug';
 
 require('logthis').config({ _on: true,
                             'Data': logLevel ,
@@ -47,6 +47,15 @@ var defaults = {
   ipc: false //whether to enable the ipc server
 };
 
+function getUuid() {
+  return 'xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx'.replace(/[x]/g, function(c) {
+    return (Math.random()*16|0).toString(16);
+  });
+}
+
+var response;
+var infoFunctions = ['getHaproxyConfig', 'getFrontend', 'getBackend', 'getBackendMembers', 'getFrontends', 'getBackends'];
+
 function ipc(api) {
   var ipc=require('node-ipc');
 
@@ -59,19 +68,48 @@ function ipc(api) {
       ipc.server.on(
         'api',
         function(data,socket){
-          var error, result;
-          if (!api[data.call]) error = "No such function: " + data.call;
-          else result = api[data.call].apply(null, data.args);
           console.log(data.call);
-          ipc.server.emit(
-            socket,
-            data.uuid,
-            {
-              id   : ipc.config.id,
-              data : result,
-              error: error
+          var error, result;
+          if (response) {
+            ipc.server.emit(
+              socket,
+              data.uuid,
+              {
+                id   : ipc.config.id,
+                error: "Call in progress.."
+              }
+            );
+          }
+          else {
+            response = function(error) {
+              ipc.server.emit(
+                socket,
+                data.uuid,
+                {
+                  id   : ipc.config.id,
+                  data : result,
+                  error: error
+                }
+              );
+              response = null;
+            };
+            if (!api[data.call]) {
+              error = "No such function: " + data.call;
+              response(error);
             }
-          );
+            else {
+              result = api[data.call].apply(null, data.args);
+            }
+            if (infoFunctions.indexOf(data.call) !== -1) {
+              response();
+            }
+            else {
+              setTimeout(function() {
+                if (response) response('timout');
+              }, 10000);
+
+            }
+          }
         }
       );
     }
@@ -135,6 +173,16 @@ module.exports =  function(opts) {
     }
   });
 
+  haproxyManager.on('haproxy-error', function (error) {
+    log._e('Haproxy error:\n', error);
+    if (response) response(error);
+  });
+
+  haproxyManager.on('configNotChanged', function (statObj) {
+    log._i('Config not changed');
+    if (response) response();
+  });
+
   // Wire up haproxy changes to write to activity db
   haproxyManager.on('configChanged', function (statObj) {
     var activityObj = { type: 'activity',  time: Date.now(), verb: 'haproxyConfigChanged'};
@@ -151,10 +199,10 @@ module.exports =  function(opts) {
       if (opts.ipc) ipc(api);
     }
     db.writeActivity(activityObj); 
+    if (response) response();
   });
     
     var api = {};
-
   api.getFrontend = function (key) {
     var id = data.frontendId(key);
     var row = data.frontends.get(id);
@@ -184,12 +232,14 @@ module.exports =  function(opts) {
   api.putFrontend = function (key, obj) {
     var id = data.frontendId(key);
     obj.key = key;
+    obj.uuid = getUuid(); //to mark it as changed..
     data.setFrontend(obj);
   };
 
   api.putBackend = function (key, obj) {
     var id = data.backendId(key);
     obj.key = key;
+    obj.uuid = getUuid(); //to mark it as changed..
     if (obj.health && obj.health.httpVersion === 'http/1.1' && !obj.host) {
       throw Error('host is required with health check with httpversion=http/1.1');
     }
@@ -199,14 +249,14 @@ module.exports =  function(opts) {
   api.deleteFrontend = function (key) {
     var id = data.frontendId(key);
     var row = data.frontends.get(id);
-    log('frontend ' + key + ' not found');
+    if (!row) throw Error('frontend ' + key + ' not found');
     data.frontends.rm(id);
   };
 
   api.deleteBackend = function (key) {
     var id = data.backendId(key);
     var row = data.backends.get(id);
-    log('backend ' + key + ' not found');
+    if (!row) throw Error('backend ' + key + ' not found');
     data.backends.rm(id);
   };
 
@@ -216,6 +266,7 @@ module.exports =  function(opts) {
     if (!row) throw Error('backend ' + key + ' not found');
     var backend = extend(true, {}, row.toJSON());
     backend.version = obj.version;
+    backend.uuid = getUuid(); //to mark it as changed..
     if (obj.name) backend.name = obj.name;
     data.setBackend(backend);
   };

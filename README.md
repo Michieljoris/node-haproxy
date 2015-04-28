@@ -119,7 +119,7 @@ Create or update a `frontend` by `key`.
       , "backend": "foo"      // the default backend to route to, it must be defined already
       , "mode": "tcp"         // default: http, expects tcp|http
       , "keepalive": "close"  // default: "default", expects default|close|server-close
-      , "rules": []           // array of rules, see next section
+      , "rules": []           // array of rules, see below
       , "natives": []         // array of strings of raw config USE SPARINGLY!!
     }
 
@@ -319,3 +319,7 @@ Header rules support `hdr_dom` with a entire value at this point
 
 The natives property is an end around way to insert raw lines of config for front ends and backends. Use them sparingly but use them if you need them.
 
+
+### TODO
+* thrown exceptions are are not handled in api.js and dependencies
+* remove health checks/roles/version leftover from Aqea

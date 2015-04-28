@@ -57,26 +57,35 @@ HAProxyManager.prototype.writeConfig = function() {
   var previousConfig = this.latestConfig;
   this.latestConfig = this.template(data);
 
-    log('Writing config\n', this.latestConfig);
   // only write the config and reload if it actually changed
   if (!deepEqual(previousConfig, this.latestConfig)) {
+    log('writing config\n', this.latestConfig);
     fs.writeFileSync(this.config.haproxyCfgPath, this.latestConfig , 'utf-8');
     this.emit('configChanged');
     this.reload();
+  }
+  else {
+    this.emit('configNotChanged');
   }
 };
 
 HAProxyManager.prototype.reload = function () {
   var self = this;
   self.haproxy.running(function (err, running) {
-    if (err) return self.log('error', 'HaproxyManager.reload', { error: String(err) });
+    if (err) {
+      self.emit('haproxy-error', String(err));
+      return self.log('error', 'HaproxyManager.reload', { error: String(err) });
+    }
 
     function handleRestart (err) {
-      if (err) return self.log('error', 'HaproxyManager.reload', { error: String(err) });
+      if (err) {
+        self.emit('haproxy-error', String(err));
+        self.log('error', 'HaproxyManager.reload', { error: String(err) });
+      }
+      self.emit('reloaded');
     }
     if (running) self.haproxy.reload(handleRestart);
     else self.haproxy.start(handleRestart);
-    self.emit('reloaded');
   });
 };
 
