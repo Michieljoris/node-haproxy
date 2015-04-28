@@ -100,7 +100,7 @@ module.exports = {
   // **NOTE:** We don't have any dependencies for this module. See the
   // `devDependencies` block for the way to include dependencies.
   "dependencies": {
-    // "dougs_vow": "*",
+    "dougs_vow": "*",
     "fs-extra": "0.18.x",
     "logthis": "*",
         

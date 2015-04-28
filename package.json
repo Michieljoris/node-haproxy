@@ -26,6 +26,7 @@
     "node": ">= 0.6.x"
   },
   "dependencies": {
+    "dougs_vow": "*",
     "fs-extra": "0.18.x",
     "logthis": "*",
     "crdt": "~3.5.1",
@@ -48,5 +49,5 @@
   "scripts": {
     "docs": "node_modules/.bin/docco src/api.js"
   },
-  "version": "0.1.21"
+  "version": "0.1.23"
 }

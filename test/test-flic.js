@@ -10,9 +10,14 @@ var node = new Node(function(err){
   console.log('client is online!');
 
   node.tell('haproxy:call', 'getBackends', null, null, function(err, result){
-    if (err)  console.log(err);
-    else console.log(result); 
+    if (err)  return console.log(err);
+    console.log(result); 
+
   });
+    node.tell('haproxy:call', 'getFrontends', null, null, function(err, result){
+      if (err)  return console.log(err);
+      console.log(result); 
+    });
 });
  
 

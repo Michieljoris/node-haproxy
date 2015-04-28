@@ -59,16 +59,15 @@ function ipc(api) {
       ipc.server.on(
         'api',
         function(data,socket){
-          log(data);
           var error, result;
           if (!api[data.call]) error = "No such function: " + data.call;
           else result = api[data.call].apply(null, data.args);
           console.log(data.call);
           ipc.server.emit(
             socket,
-            'result',
+            data.uuid,
             {
-              id      : ipc.config.id,
+              id   : ipc.config.id,
               data : result,
               error: error
             }
@@ -81,6 +80,7 @@ function ipc(api) {
   ipc.server.start();
   console.log('ipc server started');
 }
+
 
 module.exports =  function(opts) {
   var data, haproxyManager;
@@ -146,7 +146,7 @@ module.exports =  function(opts) {
     var activityObj = { type: 'activity',  time: Date.now(), verb: 'haproxyRestarted' };
     log('reloaded\n', activityObj);
     if (firstStart) {
-      log('Running..');
+      console.log('Running..');
       firstStart = false;
       if (opts.ipc) ipc(api);
     }
