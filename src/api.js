@@ -98,7 +98,9 @@ function ipc(api) {
               response(error);
             }
             else {
-              result = api[data.call].apply(null, data.args);
+              data.args = data.args || [];
+              data.args = Array.isArray(data.args) ? data.args : [data.args];
+              result = api[data.call].apply(null, data.args || []);
             }
             if (infoFunctions.indexOf(data.call) !== -1) {
               response();
@@ -202,7 +204,7 @@ module.exports =  function(opts) {
     if (response) response();
   });
     
-    var api = {};
+  var api = {};
   api.getFrontend = function (key) {
     var id = data.frontendId(key);
     var row = data.frontends.get(id);
@@ -230,14 +232,14 @@ module.exports =  function(opts) {
   };
 
   api.putFrontend = function (key, obj) {
-    var id = data.frontendId(key);
+    // var id = data.frontendId(key);
     obj.key = key;
     obj.uuid = getUuid(); //to mark it as changed..
     data.setFrontend(obj);
   };
 
   api.putBackend = function (key, obj) {
-    var id = data.backendId(key);
+    // var id = data.backendId(key);
     obj.key = key;
     obj.uuid = getUuid(); //to mark it as changed..
     if (obj.health && obj.health.httpVersion === 'http/1.1' && !obj.host) {
@@ -249,25 +251,51 @@ module.exports =  function(opts) {
   api.deleteFrontend = function (key) {
     var id = data.frontendId(key);
     var row = data.frontends.get(id);
-    if (!row) throw Error('frontend ' + key + ' not found');
-    data.frontends.rm(id);
+    // if (!row) throw Error('frontend ' + key + ' not found');
+    if (row) data.frontends.rm(id);
   };
 
   api.deleteBackend = function (key) {
     var id = data.backendId(key);
     var row = data.backends.get(id);
-    if (!row) throw Error('backend ' + key + ' not found');
-    data.backends.rm(id);
+    // if (!row) return 'backend ' + key + ' not found';
+    if (row) data.backends.rm(id);
   };
+
+  // api.deleteBackends = function (keys) {
+  //   keys.forEach(function(key) {
+  //     api.deleteBackend(key);
+  //   });
+  // };
+
+  api.updateFrontend = function (key, obj) {
+    var id = data.frontendId(key);
+    var row = data.frontends.get(id);
+    var oldFrontend;
+    obj = obj || {};
+    if (row) {
+      row = row.toJSON();
+      oldFrontend = row.state;
+    }
+    var frontend = oldFrontend ? extend(true, oldFrontend, obj) : obj; //deep copy row
+    frontend.uuid = getUuid(); //to mark it as changed..
+    frontend.key = key;
+    data.setFrontend(frontend);
+  };
+
 
   api.updateBackend = function (key, obj) {
     var id = data.backendId(key);
     var row = data.backends.get(id);
-    if (!row) throw Error('backend ' + key + ' not found');
-    var backend = extend(true, {}, row.toJSON());
-    backend.version = obj.version;
+    var oldBackend;
+    obj = obj || {};
+    if (row) {
+      row = row.toJSON();
+      oldBackend = row.state;
+    }
+    var backend = oldBackend ? extend(true, oldBackend, obj) : obj; //deep copy row
     backend.uuid = getUuid(); //to mark it as changed..
-    if (obj.name) backend.name = obj.name;
+    backend.key = key;
     data.setBackend(backend);
   };
 
@@ -279,4 +307,5 @@ module.exports =  function(opts) {
 };
 
 
+// console.log(extend(true, {a:1}, {a:2, b:2}));
 // module.exports({ ipc: true });
