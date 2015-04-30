@@ -183,16 +183,23 @@ Data.prototype._createStatObj = function(id, key, type, stat) {
 
 Data.prototype._updateDifferences = function (id, existingRow, updatedObj) {
   if (!existingRow) return this.doc.set(id, updatedObj);
-
+  console.log('bla', existingRow.state, updatedObj);
   var diffObj = {};
   diff(existingRow.toJSON(), updatedObj).forEach(function (change) {
+
     var key = change.key[0];
     if (key === 'id') return;
     if (!diffObj[key]) {
       if (change.type === 'put') diffObj[key] = updatedObj[key];
-      else if (change.type === 'del') diffObj[key] = undefined;
+      else if (change.type === 'del') {
+        if (Array.isArray(updatedObj[key]))
+          diffObj[key] = updatedObj[key];
+        else diffObj[key] = undefined;
+      }
     }
   });
+
+  console.log('bla', diffObj);
   existingRow.set(diffObj);
 };
 

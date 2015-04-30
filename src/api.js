@@ -47,6 +47,8 @@ var defaults = {
   ipc: false //whether to enable the ipc server
 };
 
+var PACKAGEJSON = Path.resolve(__dirname,  '../package.json');
+
 function getUuid() {
   return 'xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx'.replace(/[x]/g, function(c) {
     return (Math.random()*16|0).toString(16);
@@ -56,13 +58,19 @@ function getUuid() {
 var response;
 var infoFunctions = ['getHaproxyConfig', 'getFrontend', 'getBackend', 'getBackendMembers', 'getFrontends', 'getBackends'];
 
+function version() {
+  var packageJson = fs.readJsonSync(PACKAGEJSON);
+  console.log(packageJson.version);
+}
+
 function ipc(api) {
+
   var ipc=require('node-ipc');
 
   ipc.config.id   = 'haproxy';
   ipc.config.retry= 1500;
   ipc.config.silent = true;
-
+  var timeoutId;
   ipc.serve(
     function(){
       ipc.server.on(
@@ -92,6 +100,7 @@ function ipc(api) {
                 }
               );
               response = null;
+              clearTimeout(timeoutId);
             };
             if (!api[data.call]) {
               error = "No such function: " + data.call;
@@ -106,7 +115,7 @@ function ipc(api) {
               response();
             }
             else {
-              setTimeout(function() {
+              timeoutId = setTimeout(function() {
                 if (response) response('timout');
               }, 10000);
 
@@ -123,6 +132,7 @@ function ipc(api) {
 
 
 module.exports =  function(opts) {
+  console.log(version());
   var data, haproxyManager;
   opts = extend(defaults, opts);
   if (opts.which === 'system') delete opts.which;
@@ -238,6 +248,12 @@ module.exports =  function(opts) {
     data.setFrontend(obj);
   };
 
+  api.putFrontends = function(array) {
+    array.forEach(function(e) {
+      api.putFrontend(e.key, e.obj);
+    });
+  },
+
   api.putBackend = function (key, obj) {
     // var id = data.backendId(key);
     obj.key = key;
@@ -248,60 +264,124 @@ module.exports =  function(opts) {
     data.setBackend(obj);
   };
 
+  api.putBackends = function(array) {
+    array.forEach(function(e) {
+      api.putBackend(e.key, e.obj);
+    });
+  },
+
   api.deleteFrontend = function (key) {
     var id = data.frontendId(key);
     var row = data.frontends.get(id);
-    // if (!row) throw Error('frontend ' + key + ' not found');
     if (row) data.frontends.rm(id);
+    else if (response) response('Frontend not found: ' + key);
   };
+
+  var deleteFrontends = function (keys) {
+    var touched;
+    keys.forEach(function(key) {
+      var id = data.frontendId(key);
+      var row = data.frontends.get(id);
+      if (row) {
+        data.frontends.rm(id);
+        touched = true;
+      }
+    });
+    return touched;
+  };
+
+  api.deleteFrontends = function(keys) {
+    var touched = deleteFrontends(keys);
+    if (!touched && response) response();
+  },
 
   api.deleteBackend = function (key) {
     var id = data.backendId(key);
     var row = data.backends.get(id);
-    // if (!row) return 'backend ' + key + ' not found';
     if (row) data.backends.rm(id);
+    else if (response) response();
   };
 
-  // api.deleteBackends = function (keys) {
-  //   keys.forEach(function(key) {
-  //     api.deleteBackend(key);
-  //   });
+  var deleteBackends = function (keys) {
+    var touched;
+    keys.forEach(function(key) {
+      var id = data.backendId(key);
+      var row = data.backends.get(id);
+      if (row) {
+        data.backends.rm(id);
+        touched = true;
+      }
+    });
+    return touched;
+  };
+
+  api.deleteBackends = function(keys) {
+    var touched = deleteBackends(keys);
+    if (!touched && response) response();
+  };
+
+  // function inspect(arg) {
+  //   return util.inspect(arg, { depth: 10, colors: true });
+  // }
+  
+  // api.updateFrontend = function (key, obj) {
+  //   var id = data.frontendId(key);
+  //   var row = data.frontends.get(id);
+  //   var oldFrontend = {};
+  //   obj = obj || {};
+  //   if (row) {
+  //     row = row.toJSON();
+  //     oldFrontend = extend(true, {}, row); //deep copy row
+  //   }
+  //   console.log(inspect(oldFrontend));
+  //   console.log(inspect(obj));
+  //   var frontend = oldFrontend ? extend(true, oldFrontend, obj) : obj; 
+  //   frontend.rules = obj.rules;
+  //   frontend.uuid = getUuid(); //to mark it as changed..
+  //   frontend.key = key;
+  //   console.log(inspect(frontend));
+  //   console.log(response);
+  //   data.setFrontend(frontend);
   // };
 
-  api.updateFrontend = function (key, obj) {
-    var id = data.frontendId(key);
-    var row = data.frontends.get(id);
-    var oldFrontend;
-    obj = obj || {};
-    if (row) {
-      row = row.toJSON();
-      oldFrontend = row.state;
-    }
-    var frontend = oldFrontend ? extend(true, oldFrontend, obj) : obj; //deep copy row
-    frontend.uuid = getUuid(); //to mark it as changed..
-    frontend.key = key;
-    data.setFrontend(frontend);
-  };
+  // api.updateBackend = function (key, obj) {
+  //   var id = data.backendId(key);
+  //   var row = data.backends.get(id);
+  //   var oldBackend = {};;
+  //   obj = obj || {};
+  //   if (row) {
+  //     row = row.toJSON();
+  //     oldBackend = extend(true, {}, row); //deep copy row
+  //     }
+  //   var backend = oldBackend ? extend(true, oldBackend, obj) : obj; 
+  //   backend.uuid = getUuid(); //to mark it as changed..
+  //   backend.key = key;
+  //   data.setBackend(backend);
+  // };
 
-
-  api.updateBackend = function (key, obj) {
-    var id = data.backendId(key);
-    var row = data.backends.get(id);
-    var oldBackend;
-    obj = obj || {};
-    if (row) {
-      row = row.toJSON();
-      oldBackend = row.state;
+  api.bulkSet = function(ops) {
+    ops = ops || {};
+    var touched;
+    if (ops.delete) {
+      if (ops.delete.backends) touched = touched || deleteBackends(ops.delete.backends);
+      if (ops.delete.frontends) touched = touched || deleteFrontends(ops.delete.frontends);
     }
-    var backend = oldBackend ? extend(true, oldBackend, obj) : obj; //deep copy row
-    backend.uuid = getUuid(); //to mark it as changed..
-    backend.key = key;
-    data.setBackend(backend);
-  };
+    if (ops.put) {
+      if (ops.put.backends && ops.put.backends.length) {
+        touched = true;
+        api.putBackends(ops.put.backends);
+      }
+      if (ops.put.frontend) {
+        touched = true;
+        api.putFrontend(ops.put.frontend.key, ops.put.frontend.obj);
+      }
+    }
+    if (!touched && response) response();
+  },
 
   api.getHaproxyConfig = function () {
     return haproxyManager.latestConfig;
-    };
+  };
 
   return api;
 };
@@ -309,3 +389,6 @@ module.exports =  function(opts) {
 
 // console.log(extend(true, {a:1}, {a:2, b:2}));
 // module.exports({ ipc: true });
+
+// var p = fs.readJsonSync('/home/michieljoris/src/node-haproxy/temp/persisted');
+// console.log(p);
