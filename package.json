@@ -50,5 +50,5 @@
   "scripts": {
     "docs": "node_modules/.bin/docco src/api.js"
   },
-  "version": "0.1.25"
+  "version": "0.1.26"
 }
