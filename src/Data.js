@@ -41,6 +41,7 @@ Data.prototype.createReadableStream = function() {
 };
 
 Data.prototype.setFrontend = function(obj) {
+  console.log(obj.bind);
   assert(typeof obj.key === 'string' && obj.key.length > 0);
   assert(typeof obj.bind === 'string');
   var id = this.frontendId(obj.key);

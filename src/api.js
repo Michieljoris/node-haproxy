@@ -386,7 +386,8 @@ module.exports =  function(opts) {
   return api;
 };
 
-
+// module.exports({ ipc: true});
+// console.log(process._arguments);
 // console.log(extend(true, {a:1}, {a:2, b:2}));
 // module.exports({ ipc: true });
 

@@ -83,7 +83,7 @@ module.exports = {
   //-g we will be able to call this new command node-haproxy from anywhere on
   //our system.
   "bin": {
-    "node-haproxy": "bin/node-haproxy.js"
+    "node-haproxy": "bin/node-haproxy.sh"
   },
     
   // require a Node.js installation that is greater than or equal to version 0.6.0
