@@ -41,7 +41,6 @@ Data.prototype.createReadableStream = function() {
 };
 
 Data.prototype.setFrontend = function(obj) {
-  console.log(obj.bind);
   assert(typeof obj.key === 'string' && obj.key.length > 0);
   assert(typeof obj.bind === 'string');
   var id = this.frontendId(obj.key);
@@ -184,7 +183,6 @@ Data.prototype._createStatObj = function(id, key, type, stat) {
 
 Data.prototype._updateDifferences = function (id, existingRow, updatedObj) {
   if (!existingRow) return this.doc.set(id, updatedObj);
-  console.log('bla', existingRow.state, updatedObj);
   var diffObj = {};
   diff(existingRow.toJSON(), updatedObj).forEach(function (change) {
 
@@ -200,7 +198,6 @@ Data.prototype._updateDifferences = function (id, existingRow, updatedObj) {
     }
   });
 
-  console.log('bla', diffObj);
   existingRow.set(diffObj);
 };
 

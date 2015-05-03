@@ -1,4 +1,4 @@
-var logLevel = 'debug';
+var logLevel = 'info';
 
 require('logthis').config({ _on: true,
                             'Data': logLevel ,
@@ -60,7 +60,7 @@ var infoFunctions = ['getHaproxyConfig', 'getFrontend', 'getBackend', 'getBacken
 
 function version() {
   var packageJson = fs.readJsonSync(PACKAGEJSON);
-  console.log(packageJson.version);
+  return packageJson.version;
 }
 
 function ipc(api) {
@@ -132,7 +132,7 @@ function ipc(api) {
 
 
 module.exports =  function(opts) {
-  console.log(version());
+  console.log('Version:', version());
   var data, haproxyManager;
   opts = extend(defaults, opts);
   if (opts.which === 'system') delete opts.which;
