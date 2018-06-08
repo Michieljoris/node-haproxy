@@ -26,22 +26,22 @@
     "node": ">= 0.6.x"
   },
   "dependencies": {
-    "dougs_vow": "*",
-    "fs-extra": "0.18.x",
-    "logthis": "*",
+    "changeset": "0.0.5",
     "crdt": "~3.5.1",
-    "handlebars": "~1.0.12",
     "debounce": "0.0.2",
     "deep-equal": "0.0.0",
-    "haproxy": "0.0.3",
-    "changeset": "0.0.5",
-    "optimist": "~0.6.0",
-    "xtend": "~2.0.6",
+    "dougs_vow": "*",
     "extend": "~1.2.0",
-    "level": "~0.18.0",
-    "mkdirp": "~0.3.5",
     "flic": "^1.1.2",
-    "node-ipc": "^1.1.13"
+    "fs-extra": "0.18.x",
+    "handlebars": "~1.0.12",
+    "haproxy": "0.0.3",
+    "level": "^4.0.0",
+    "logthis": "*",
+    "mkdirp": "~0.3.5",
+    "node-ipc": "^1.1.13",
+    "optimist": "~0.6.0",
+    "xtend": "~2.0.6"
   },
   "devDependencies": {
     "docco": "*"
